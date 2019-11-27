@@ -34,6 +34,8 @@ if len(sys.argv) == 2:
                 wcnt = 1
                 readcnt += 1
                 while wcnt > 0:
+                    if readcnt >= len(program):
+                        raise Exception("] isn't found.")
                     if program[readcnt] == "[":
                         wcnt += 1
                     elif program[readcnt] == "]":
