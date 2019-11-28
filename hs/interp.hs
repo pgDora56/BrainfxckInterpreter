@@ -11,17 +11,17 @@ main = do
     withFile (args !! 0) ReadMode $ \handle -> do
         program <- DB.hGetContents handle
         print program
-        interpret program (repeat 0) 0
+        interpret program (repeat 0) 0 0 
 
-interpret :: DB.ByteString -> [Int] -> Int -> IO ()
-interpret "" _ _ = return ()
-interpret (p:prg) memory idx 
-    | p == "+" = do
-        nmemo <- increment  memory idx
-        interpret prg nmemo idx
-    | p == "." = do 
+interpret :: DB.ByteString -> [Int] -> Int -> Int -> IO ()
+interpret prg memory idx rpos
+    | rpos >= (DB.length prg) = return ()
+    | (prg !! rpos) == "+" = do
+        nmemo <- increment memory idx
+        interpret prg nmemo idx (rpos+1)
+    | (prg !! rpos) == "." = do 
         putStr $ chr (memory !! idx)
-        interpret prg memory idx
+        interpret prg memory idx (rpos+1)
 
 increment :: [Int] -> Int -> [Int]
 increment lis x = f ++ [l+1] ++ ls
