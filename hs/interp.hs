@@ -1,6 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import Debug.Trace
 import System.IO
 import System.Environment (getArgs)
 import Data.Char (chr)
