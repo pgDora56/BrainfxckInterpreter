@@ -2,7 +2,7 @@
 
 import System.IO
 import System.Environment (getArgs)
-import Data.Char (chr)
+import Data.Char (chr, ord)
 
 main :: IO()
 main = do
@@ -38,6 +38,10 @@ interpret prg memory while idx rpos
     | ch == '.' = do 
         putChar $ chr (memory !! idx)
         interpret prg memory while idx (rpos+1)
+    | ch == ',' = do
+        putStr "\nInput > "
+        ich <- getChar
+        interpret prg (insert memory idx $ ord ich) while idx (rpos+1)
     | otherwise = interpret prg memory while idx (rpos+1)
         where ch = prg !! rpos
 
@@ -48,4 +52,8 @@ increment lis x = f ++ [l+1] ++ ls
 decrement :: [Int] -> Int -> [Int]
 decrement lis x = f ++ [l-1] ++ ls
     where (f, (l:ls)) = splitAt x lis
+
+insert :: [Int] -> Int -> Int -> [Int]
+insert lis x val = f ++ (val : ls)
+    where (f, (_:ls)) = splitAt x lis
 
